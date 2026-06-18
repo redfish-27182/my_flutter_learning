@@ -9,24 +9,23 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Welcome to Flutter',
       home: Scaffold(
-        body: Center(
-          child: Container(
-            child: Image.network(
-              // 讓圖片保持原有的寬高比，並且在容器內完整顯示
-              //fit: BoxFit.contain,
-              // 讓圖片保持原有的寬高比，並且在容器內完全填滿，可能會裁剪圖片
-              //fit: BoxFit.fitWidth,
-              // 讓圖片保持原有的寬高比，並且在容器內完全填滿，可能會裁剪圖片
-              //fit: BoxFit.cover, 
-              'https://picsum.photos/300/200',
-              color: Colors.greenAccent,
-              colorBlendMode: BlendMode.darken,
-              repeat: ImageRepeat.repeatX,
+        appBar: AppBar( title: Text('Welcome to Flutter'),),
+        body: ListView(
+          
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.map),
+              title: Text('地圖'),
             ),
-            width: 500.0,
-            height: 200.0,
-            color: Colors.lightBlue,
-          ),
+            ListTile(
+              leading: Icon(Icons.photo_album),
+              title: Text('相簿'),
+            ),
+            ListTile(
+              leading: Icon(Icons.phone),
+              title: Text('電話'),
+            ),
+          ],
         ),
       ),
     );
