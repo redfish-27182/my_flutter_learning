@@ -14,17 +14,20 @@ class MyApp extends StatelessWidget {
               'https://img1.baidu.com/it/u=1871559050,1680910223&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'),
           radius: 100,
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.lightBlue,
-          ),
-          padding: EdgeInsets.all(10.0),
+        Positioned(
+          top: 10,
+          left: 60,
           child: Text(
             '我是陳鼎云',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
-            ),
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+        Positioned(
+          bottom: 10,
+          right: 10,
+          child: Text(
+            '囹圄超可愛',
+            style: TextStyle(color: Colors.black),
           ),
         )
       ],
