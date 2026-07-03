@@ -6,24 +6,31 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Welcome to Flutter',
+      title: 'GridView 圖片展示', 
+
       home: Scaffold(
-        appBar: AppBar(title: const Text('Welcome to Flutter'),),
+        appBar: AppBar(title: const Text('GridView 圖片展示'),),
         // 💡 修正：外層直接用 ListView，讓整頁可以上下滾動
-        body:GridView.count(
-          padding: const EdgeInsets.all(20)
-          // 這裡的 padding 是指整個 GridView 的內邊距,
-          crossAxisCount: 2,
-          // 這裡的 crossAxisCount 是指每行顯示幾個元素
-          children:  <Widget>[
-            const Text('Hello World'),
-            const Text('Hello World'),  
-            const Text('Hello World'),
-            const Text('Hello World'),
-            const Text('Hello World'),
-          ]
+        body:GridView(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3, // 每行顯示兩個格子
+            mainAxisSpacing: 4.0, // 主軸間距
+            crossAxisSpacing: 2.0, // 交叉軸間距               
+            childAspectRatio: 0.7, // 格子的寬高比
+          ),
+        children: <Widget>[
+          new Image.network('https://picsum.photos/250?image=9', fit: BoxFit.cover), 
+          // fit: BoxFit.cover 讓圖片填滿格子
+          new Image.network('https://picsum.photos/250?image=10', fit: BoxFit.cover),
+          new Image.network('https://picsum.photos/250?image=11', fit: BoxFit.cover),
+          new Image.network('https://picsum.photos/250?image=12', fit: BoxFit.cover),
+          new Image.network('https://picsum.photos/250?image=13', fit: BoxFit.cover),
+          new Image.network('https://picsum.photos/250?image=14', fit: BoxFit.cover),
+          new Image.network('https://picsum.photos/250?image=15', fit: BoxFit.cover),
+
+        ],
+        )
       ),
     );
   }
 }
-
