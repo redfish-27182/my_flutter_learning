@@ -8,33 +8,21 @@ class MyApp extends StatelessWidget {
       title: 'Row Widget Demo',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Row Widget Demo'),
+          title: const Text('垂直方向布局'),
         ),
-        body: Row( 
+        body: Center(child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue, // Set the background color
-              ),
-              child: const Text('Blue Button'),
+            Container(
+              color: Colors.red,
+              height: 100.0,
+              width: 500.0,
             ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red, // Set the background color
-              ),
-              child: const Text('Red Button'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green, // Set the background color
-              ),
-              child: const Text('Green Button'),
-            ),
+            Text('我是陳鼎云'),
+            Text('我愛淋雨'),
           ],
-        ),
+        )
       ),
     );
   }
