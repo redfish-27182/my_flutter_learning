@@ -40,11 +40,35 @@ class Productlist extends StatelessWidget {
           return ListTile(
             title: Text(products[index].title),
             subtitle: Text(products[index].description),
-            
-            onTap:(){}
+            onTap:(){
+              // 💡 修正：使用 Navigator.push 來跳轉到商品詳情頁面，並傳遞參數
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductDetail(product: products[index]),
+                ),
+              );
+            }
           );
         },
       ),
     );
   }    
+}
+
+class ProductDetail extends StatelessWidget {
+  final Product product; // 商品資料
+  
+  // 💡 提示：未來這裡可以用更現代的 const ProductDetail({super.key, ...}) 寫法，藍色虛線會更少喔！
+  ProductDetail({Key? key, required this.product}) : super(key: key); 
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(product.title)),
+      body: Center(
+        child: Text(product.description),
+      ),
+    );
+  }
 }
