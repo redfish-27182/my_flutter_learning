@@ -23,7 +23,7 @@ class firstPage extends StatelessWidget {
         return Container(
           width: 250.0,
           height: 60.0,
-          margin: const EdgeInsets.symmetric(vertical: 8.0), // 順便幫按鈕上下留點空隙，不會黏在一起
+          //margin: const EdgeInsets.symmetric(vertical: 8.0), // 順便幫按鈕上下留點空隙，不會黏在一起
           decoration: BoxDecoration(
             color: Colors.orange,
             borderRadius: BorderRadius.circular(4.0), // 你的俐落小圓角
