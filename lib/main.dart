@@ -1,102 +1,127 @@
 import 'package:flutter/material.dart';
 
-// ==========================================
-// 🧱 第一塊積木：商品的「資料模具」(Model)
-// ==========================================
-// 告訴電腦，世界上每一件「商品」在記憶體裡都必須長這樣：有標題、有描述。
-class Product {
-  final String title;       // 商品標題（例如：商品 5）
-  final String description; // 商品描述（例如：這是商品 5 的描述）
-
-  // 構造函數：規定要在程式裡建立 Product 物件時，必須明確填入 title 和 description
-  Product({required this.title, required this.description});
-}
-
-// ==========================================
-// 🚀 程式的起跑點 (Main 函數)
-// ==========================================
 void main() {
-  runApp(MaterialApp(
-    title: '陳鼎云的商品列表',
-    home: Productlist(
-      // 💡 輸送帶魔法：叫電腦重複 20 次動作，自動生產出 20 個 Product 商品物件，
-      // 並通通打包進一個名為 `products` 的清單（List）裡，然後丟給 Productlist 畫面。
-      products: List.generate(
-        20,
-        (i) => Product(
-          title: '商品 $i', 
-          description: '這是商品 $i 的描述',
-        ),
-      ), 
-    ),
-  ));
+  runApp(const MyApp());
 }
 
-// ==========================================
-// 📱 第二塊積木：商品列表畫面 (第一頁)
-// ==========================================
-class Productlist extends StatelessWidget {
-  // 接收從 main 函數傳過來的那一箱「20個商品清單」
-  final List<Product> products; 
-  
-  Productlist({Key? key, required this.products}) : super(key: key); 
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      title: '頁面跳轉返回程序',
+      home: firstPage(),
+    );
+  }
+}
+
+// 主頁面
+class firstPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('陳鼎云的商品列表')),
-      
-      // 💡 蓋房子的工廠 (ListView.builder)：它非常聰明，螢幕多大它就先畫幾個，省記憶體！
-      body: ListView.builder(
-        itemCount: products.length, // 告訴工廠：總共要蓋 20 個房間 (ListTile)
-        itemBuilder: (context, index) {
-          // index 是目前蓋到第幾個房間的編號 (從 0 開始到 19)
-          return ListTile(
-            title: Text(products[index].title),       // 拿出第 index 個商品的標題塞進去
-            subtitle: Text(products[index].description), // 拿出第 index 個商品的描述塞進去
-            
-            // 💡 點擊事件：當使用者用手指點了這條商品時...
-            onTap: () {
-              // 遞出目前的「身分證 context」，叫大總管 Navigator 幫我們推（Push）到下一頁
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  // 關鍵精髓：跳轉到詳情頁（ProductDetail）的同時，
-                  // 順手把「被點擊的這一個商品資料 (products[index])」整包傳過去！
-                  builder: (context) => ProductDetail(product: products[index]),
-                ),
-              );
-            }
-          );
-        },
+      appBar: AppBar(
+        title: const Text('找小姐姐要電話'),
+        backgroundColor: Colors.pinkAccent, // 💡 配合主題換個粉紅色系
+      ),
+      body: Center(
+        child: RouteButton(), // 💡 呼叫底下的自訂按鈕元件
       ),
     );
-  }    
+  }
 }
 
 // ==========================================
-// 🔍 第三塊積木：商品詳情畫面 (第二頁)
+// 👆 自訂的跳轉按鈕元件
 // ==========================================
-class ProductDetail extends StatelessWidget {
-  // 這裡準備好一個位子，用來接收上一頁傳過來的「單一個商品資料」
-  final Product product; 
-  
-  const ProductDetail({super.key, required this.product});
-  
+class RouteButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        // 💡 點擊時，執行底下的異步跳轉函數，並把目前的身分證 (context) 傳過去
+        _navigateToLittleSister(context);
+      },
+      //style: ElevatedButton.styleFrom(backgroundColor: Colors.pink),
+      child: const Text('去找小姐姐'),
+    );
+  }
+
+  // 💡 關鍵異步函數：async 與 await 是一對的！
+  // 因為我們不知道小姐姐會考慮多久，所以要用 `await` 卡住，等她回傳結果
+  _navigateToLittleSister(BuildContext context) async {
+    
+    // 💡 坐高鐵去第二頁，並且「等待（await）」Navigator.pop 回傳的值
+    // 當小姐姐那一頁 pop 時，回傳的字串會自動塞進 `result` 變數裡
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LittleSister()),
+    );
+
+    // 💡 檢查機制：萬一使用者直接按手機內建的返回鍵，result 可能會是 null
+    if (result == null) return;
+
+    // 💡 修正：改用現代標準的 ScaffoldMessenger
+    // 在螢幕最下方彈出一個黑底提示泡泡，把小姐姐回傳的結果 ($result) 印出來！
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('小姐姐的回覆：$result'),
+        duration: const Duration(seconds: 3), // 提示顯示 3 秒
+      ),
+    );
+  }
+}
+
+// ==========================================
+// 👩 第二頁：小姐姐本尊畫面 (原本漏掉的積木)
+// ==========================================
+class LittleSister extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 💡 點進來後，上方 AppBar 就會自動顯示該商品的標題 (例如：商品 5)
-      appBar: AppBar(title: Text(product.title)),
-      
+      appBar: AppBar(
+        title: const Text('遇到小姐姐了'),
+      ),
       body: Center(
-        // 💡 畫面中間用一個大大的、淺綠色的文字，把該商品的詳細描述顯示出來！
-        child: Text(
-          product.description,
-          style: const TextStyle(
-            fontSize: 48,
-            color: Colors.lightGreen,
-          ),
+        // 用 Column 把文字和兩個按鈕垂直排好
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // 按鈕一：願意給電話
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+              
+              child: const Text('程益懸小姐姐'),
+              onPressed: () {
+                // 💡 關鍵：pop 的第二個參數，就是你要傳回給第一頁的「神秘禮物（資料）」！
+                Navigator.pop(context, '我有男友了');
+              },
+            ),
+
+            const SizedBox(height: 15),
+
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+              onPressed: () {
+                // 💡 關鍵：pop 的第二個參數，就是你要傳回給第一頁的「神秘禮物（資料）」！
+                Navigator.pop(context, '操你媽死矮子滾選一點');
+              },
+              child: const Text('渠利安小姐姐'),
+            ),
+            
+            const SizedBox(height: 15),
+            
+            // 按鈕二：拒絕
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              onPressed: () {
+                // 💡 拒絕時，傳回另外一個字串
+                Navigator.pop(context, '......');
+              },
+              child: const Text('楊囹圄小姐姐'),
+            ),
+          ],
         ),
       ),
     );
