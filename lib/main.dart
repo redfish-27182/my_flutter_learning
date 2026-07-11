@@ -8,8 +8,10 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context){
     return MaterialApp(
       title:'Flutter bottomNavigationBar',
-      theme: ThemeData.light(),
-      home: BottomNavigationWidget()
+      theme: ThemeData(
+        primarySwatch: Colors.lightBlue
+      ),
+      home: BottomAppBarDemo()
     );
   }
 }
