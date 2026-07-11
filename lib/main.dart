@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'bottom_navigation_widget.dart';
+import 'pages.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget{
       theme: ThemeData(
         primarySwatch: Colors.lightBlue
       ),
-      home: BottomAppBarDemo()
+      home: FirstPage()
     );
   }
 }
