@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'pages/email_screen.dart';
+import 'pages/home_screen.dart';
+import 'pages/pages_screen.dart';
+import 'pages/airpay_screen.dart';
 
 // ==========================================
 // 🏠 底部導航欄的主體（外殼積木）
@@ -16,14 +20,35 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   // 💡 自訂一個顏色變數，未來想換主題色時，只要改這裡，所有按鈕一起變色！
   final _BottomNavigationWidgetColor = Colors.blue;
   
+  // 💡 修正一：變數宣告中間改用分號 `;`，新版空陣列直接用 `[]`
+  int _currentIndex = 0;
+  List<Widget> pagelist = [];
+
+  // 初始化狀態（這裏寫得超讚！級聯運算子用得很漂亮）
+  @override
+  void initState(){
+    pagelist
+      ..add(HomeScreen())
+      ..add(EmailScreen())
+      ..add(PagesScreen())
+      ..add(AirpayScreen());
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // 💡 修正二：這行結尾一定要補上「逗號 `,`」
+      body: pagelist[_currentIndex], 
+
       // 💡 bottomNavigationBar 是 Scaffold 專門用來放底部導航欄的骨架位子
       bottomNavigationBar: BottomNavigationBar(
         
         // 🔥 關鍵解鎖：當項目 >= 4 個時，必須強制設定為 fixed，否則沒點到的按鈕字體會消失！
-        type: BottomNavigationBarType.fixed,
+        //type: BottomNavigationBarType.fixed,
+        
+        // 💡 修正四：一定要把目前的 index 綁進來，底下的按鈕發亮才會跟著動！
+        currentIndex: _currentIndex,
         
         // 🎨 設定被點選時的標籤文字顏色
         selectedItemColor: _BottomNavigationWidgetColor,
@@ -36,8 +61,6 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
-              // 💡 小提示：因為我們在外層統一設定了 selected/unselected 顏色，
-              // 這裡的 color: 屬性其實可以放心地整行刪掉，讓外層大總管自動控制喔！
               color: _BottomNavigationWidgetColor, 
             ),
             label: 'Home', // 新版寫法：直接給純字串，不能寫 Text() 喔！
@@ -70,6 +93,12 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
             label: 'Airplay',
           )
         ],
+        // index是flutter自帶的
+        onTap: (int index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
       ),
     );
   }
