@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'pages/home.dart';
+import 'pages/storage.dart';
+import 'pages/menu.dart';
+import 'pages/settings.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,6 +23,16 @@ class BottomAppBarDemo extends StatefulWidget{
 
 class _BottomAppBarDemoState extends State<BottomAppBarDemo>{
   int currentIndex = 0;
+  List<Widget> pagelist = [];
+
+  void initState(){
+    pagelist
+      ..add(HomeScreen())
+      ..add(StorageScreen())
+      ..add(MenuScreen())
+      ..add(SettingsScreen());
+    super.initState();
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -29,35 +43,47 @@ class _BottomAppBarDemoState extends State<BottomAppBarDemo>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(
-        elevation: 100.0,
-        surfaceTintColor: Colors.transparent,
-        backgroundColor: Colors.blue[100],
-
-        title: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: '超貼心 ',
-                style: const TextStyle(
-                  fontSize: 36.0,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500,
-                ),
+      body: Column(
+        children: [
+          Container(
+            color: Colors.white, 
+            
+            padding: const EdgeInsets.only(top: 20.0, bottom: 12.0), 
+            
+            // 內容水平置中
+            alignment: Alignment.centerLeft, 
+            
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: '  超貼心 ',
+                    style: const TextStyle(
+                      fontSize: 36.0,
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  TextSpan(
+                    text: '廚房智能管家',
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      color: Colors.grey[700], 
+                      textBaseline: TextBaseline.ideographic
+                    ),
+                  ),
+                ],
               ),
-              TextSpan(
-                text: '廚房智能管家',
-                style: TextStyle(
-                  fontSize: 24.0,
-                  color: Colors.grey[700], 
-                  textBaseline: TextBaseline.ideographic
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-        //centerTitle: true,
-        
+          Divider(
+            height: 1.0,
+            color: Colors.grey[300],
+          ),
+          Expanded(
+            child: pagelist[currentIndex],
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: (){
@@ -85,41 +111,33 @@ class _BottomAppBarDemoState extends State<BottomAppBarDemo>{
             mainAxisSize: MainAxisSize.max,
 
             children: <Widget>[
-              Expanded(
-                child: EachIconButton(
-                  index: 0,
-                  currentIndex: currentIndex,
-                  icon: Icons.home,
-                  label: '主頁',
-                  onPressed: _onItemTapped,
-                ),
+              EachIconButton(
+                index: 0,
+                currentIndex: currentIndex,
+                icon: Icons.home,
+                label: '主頁',
+                onPressed: _onItemTapped,
               ),
-              Expanded(
-                child: EachIconButton(
-                  index: 1,
-                  currentIndex: currentIndex,
-                  icon: Icons.storage,
-                  label: '庫存',
-                  onPressed: _onItemTapped,
-                ),
+              EachIconButton(
+                index: 1,
+                currentIndex: currentIndex,
+                icon: Icons.storage,
+                label: '庫存',
+                onPressed: _onItemTapped,
               ),
-              Expanded(
-                child: EachIconButton(
-                  index: 2,
-                  currentIndex: currentIndex,
-                  icon: Icons.menu_book,
-                  label: '菜單',
-                  onPressed: _onItemTapped,
-                ),
+              EachIconButton(
+                index: 2,
+                currentIndex: currentIndex,
+                icon: Icons.menu_book,
+                label: '菜單',
+                onPressed: _onItemTapped,
               ),
-              Expanded(
-                child: EachIconButton(
-                  index: 3,
-                  currentIndex: currentIndex,
-                  icon: Icons.settings,
-                  label: '設定',
-                  onPressed: _onItemTapped,
-                ),
+              EachIconButton(
+                index: 3,
+                currentIndex: currentIndex,
+                icon: Icons.settings,
+                label: '設定',
+                onPressed: _onItemTapped,
               ),
             ],
           ),
@@ -146,38 +164,41 @@ class EachIconButton extends StatelessWidget{
   final ValueChanged<int> onPressed;
 
   @override
+
   Widget build(BuildContext context){
     final bool isSelected = index == currentIndex;
     Color selectedColor = Colors.blue[700]!;
-    Color normalColor = Colors.grey[700]!;
+    Color normalColor = Colors.grey[500]!;
 
-    return TextButton(
-      isSemanticButton: false,
-      onPressed: () => onPressed(index),
-      style: TextButton.styleFrom(
-        padding: EdgeInsets.zero,
-        minimumSize: Size.zero,
-        foregroundColor: isSelected ? selectedColor : normalColor,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon, 
-            size: isSelected ? 24.0 : 20.0, 
-            color: isSelected ? selectedColor : normalColor
-          ),
-          const SizedBox(height: 4.0),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: isSelected ? 14.0 : 12.0,
-              color: isSelected ? selectedColor : normalColor,
+    return Expanded(
+      child: TextButton(
+        isSemanticButton: false,
+        onPressed: () => onPressed(index),
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+          minimumSize: Size.zero,
+          foregroundColor: isSelected ? selectedColor : normalColor,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon, 
+              size: isSelected ? 24.0 : 20.0, 
+              color: isSelected ? selectedColor : normalColor
             ),
-          ),
-        ],
-      ),
+            const SizedBox(height: 4.0),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: isSelected ? 14.0 : 12.0,
+                color: isSelected ? selectedColor : normalColor,
+              ),
+            ),
+          ],
+        ),
+      )
     );
   }
 }
